@@ -28,12 +28,12 @@ public class ExceptionController {
         return "redirect:/login/failed";
     }
 
-    @ExceptionHandler(UpdateUserException.class)
+    @ExceptionHandler(UpdateException.class)
     public String handleUpdateUserException(RuntimeException e) {
         return "redirect:/user/{userId}/form";
     }
 
-    @ExceptionHandler({DuplicateUserException.class, NonExistUserException.class, UserAccessException.class})
+    @ExceptionHandler({DuplicateUserException.class, NotFoundException.class, UserAccessException.class, SaveException.class})
     public ResponseEntity<ErrorResponse> handleExceptions(CustomException e) {
         return ErrorResponse.createResponseEntity(e.getErrorCode());
     }

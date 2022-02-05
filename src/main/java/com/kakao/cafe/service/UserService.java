@@ -40,14 +40,14 @@ public class UserService {
     public void updateUser(User updateUser, UserId originalUserId) {
         boolean isChangedUserId = !updateUser.equalId(originalUserId);
         if (isChangedUserId) {
-            throw new UpdateUserException(ErrorCode.CANNOT_CHANGE_USER_ID);
+            throw new UpdateException(ErrorCode.CANNOT_CHANGE_USER_ID);
         }
 
         Optional<User> user = userRepository.findByUserId(updateUser.getUserId());
-        User originalUser = findExistUser(user, new UpdateUserException(ErrorCode.FAILED_LOGIN));
+        User originalUser = findExistUser(user, new UpdateException(ErrorCode.FAILED_LOGIN));
         boolean isCorrectPassword = updateUser.equalPassword(originalUser);
         if (!isCorrectPassword) {
-            throw new UpdateUserException(ErrorCode.WRONG_USER_PASSWORD);
+            throw new UpdateException(ErrorCode.WRONG_USER_PASSWORD);
         }
         userRepository.update(updateUser);
     }
@@ -66,7 +66,7 @@ public class UserService {
 
     public User findByUserId(UserId userId) {
         Optional<User> user = userRepository.findByUserId(userId);
-        return findExistUser(user, new NonExistUserException(ErrorCode.USER_NOT_FOUND));
+        return findExistUser(user, new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private User findExistUser(Optional<User> user, RuntimeException exception) {

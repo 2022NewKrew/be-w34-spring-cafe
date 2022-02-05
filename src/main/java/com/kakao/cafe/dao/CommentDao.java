@@ -22,17 +22,22 @@ public class CommentDao {
     }
 
     public List<CommentDbDto> findByArticleId(Long articleId) {
-        String sql = "SELECT C.COMMENT_ID, U.NAME, C.WRITE_TIME, C.CONTENTS FROM COMMENTS C INNER JOIN USERS U ON C.USER_ID = U.USER_ID WHERE C.ARTICLE_ID = ?";
+        String sql = "SELECT C.COMMENT_ID, U.NAME, C.WRITE_TIME, C.CONTENTS FROM COMMENTS C INNER JOIN USERS U ON C.USER_ID = U.USER_ID WHERE C.ARTICLE_ID = ? AND C.DELETED = FALSE";
         return jdbcTemplate.query(sql, new CommentRowMapper(), articleId);
     }
 
-    public List<CommentDbDto> findByArticleIdAndUserId(Long articleId, String userId) {
-        String sql = "SELECT COMMENT_ID, ARTICLE_ID, USER_ID, WRITE_TIME, CONTENTS FROM COMMENTS WHERE ARTICLE_ID = ? AND USER_ID = ?";
-        return jdbcTemplate.query(sql, new CommentRowMapper(), articleId, userId);
+    public int countByArticleIdAndUserId(Long articleId, String userId) {
+        String sql = "SELECT COUNT(COMMENT_ID) FROM COMMENTS WHERE ARTICLE_ID = ? AND USER_ID <> ? AND DELETED = FALSE";
+        return jdbcTemplate.queryForObject(sql, Integer.class, articleId, userId);
     }
 
     public int delete(Long commentId, Long articleId, String userId) {
-        String sql = "DELETE FROM COMMENTS WHERE COMMENT_ID = ? AND ARTICLE_ID = ? AND USER_ID = ?";
+        String sql = "UPDATE COMMENTS SET DELETED = TRUE WHERE COMMENT_ID = ? AND ARTICLE_ID = ? AND USER_ID = ?";
         return jdbcTemplate.update(sql, commentId, articleId, userId);
+    }
+
+    public int deleteByArticleIdAndUserId(Long articleId, String userId) {
+        String sql = "UPDATE COMMENTS SET DELETED = TRUE WHERE ARTICLE_ID = ? AND USER_ID = ? AND DELETED = FALSE";
+        return jdbcTemplate.update(sql, articleId, userId);
     }
 }

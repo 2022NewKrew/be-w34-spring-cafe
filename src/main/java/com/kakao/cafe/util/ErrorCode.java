@@ -30,7 +30,9 @@ public enum ErrorCode {
     FAILED_LOGIN(BAD_REQUEST, "로그인에 실패했습니다."),
 
     FORBIDDEN_USER(FORBIDDEN, "접근 권한이 없습니다."),
-    ACCESS_DENIED_USER(FORBIDDEN, "접근 권한이 없습니다.");
+    ACCESS_DENIED_USER(FORBIDDEN, "접근 권한이 없습니다."),
+
+    CANNOT_SAVE_ARTICLE(INTERNAL_SERVER_ERROR, "질문 저장에 실패했습니다.");
 
 
     private final HttpStatus httpStatus;

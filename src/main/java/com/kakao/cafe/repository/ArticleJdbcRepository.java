@@ -10,7 +10,10 @@ import com.kakao.cafe.dto.ArticleDbDto;
 import com.kakao.cafe.dto.ArticleSaveDto;
 import com.kakao.cafe.dto.ArticleUpdateDto;
 import com.kakao.cafe.dto.CommentDbDto;
+import com.kakao.cafe.exception.NotFoundException;
+import com.kakao.cafe.util.ErrorCode;
 import com.kakao.cafe.util.mapper.ArticleDbMapper;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,23 +38,24 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public Article findByArticleId(Id articleId) {
-        ArticleDbDto articleDbDto = articleDao.findByArticleId(articleId.getId());
-        List<CommentDbDto> commentDbDtos = commentDao.findByArticleId(articleId.getId());
-        Article article = ArticleDbMapper.toArticle(articleDbDto, commentDbDtos);
-        return article;
+        try {
+            ArticleDbDto articleDbDto = articleDao.findByArticleId(articleId.getId());
+            List<CommentDbDto> commentDbDtos = commentDao.findByArticleId(articleId.getId());
+            return ArticleDbMapper.toArticle(articleDbDto, commentDbDtos);
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND);
+        }
     }
 
     public Article findByArticleIdAndLoginId(Id articleId, UserId userId) {
         ArticleDbDto articleDbDto = articleDao.findByArticleIdAndLoginId(articleId.getId(), userId.getUserId());
-        Article article = ArticleDbMapper.toArticle(articleDbDto);
-        return article;
+        return ArticleDbMapper.toArticle(articleDbDto);
     }
 
     @Override
     public Articles findAll() {
         List<ArticleDbDto> articleDbDtos = articleDao.findAll();
-        Articles articles = ArticleDbMapper.toArticles(articleDbDtos);
-        return articles;
+        return ArticleDbMapper.toArticles(articleDbDtos);
     }
 
     @Override
@@ -63,11 +67,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public boolean delete(Id articleId, UserId loginId) {
-        // TODO: 게시글 작성자와 댓글 작성자가 다를 경우 삭제 불가능
-        // 데이터 삭제 상태로 업데이트
-        // 게시글을 삭제할 때 댓글도 삭제 한다.
-        int count = articleDao.delete(articleId.getId(), loginId.getUserId());
-        //commentDao.delete(articleId.getId());
-        return count == 1;
+        boolean isSameUser = commentDao.countByArticleIdAndUserId(articleId.getId(), loginId.getUserId()) == 0;
+        if (isSameUser) {
+            int count = articleDao.delete(articleId.getId(), loginId.getUserId());
+            commentDao.deleteByArticleIdAndUserId(articleId.getId(), loginId.getUserId());
+            return count == 1;
+        }
+        return false;
     }
 }

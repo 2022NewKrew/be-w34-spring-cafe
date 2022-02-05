@@ -25,28 +25,27 @@ public class ArticleDao {
     }
 
     public ArticleDbDto findByArticleId(Long articleId) throws EmptyResultDataAccessException {
-        String sql = "SELECT A.ARTICLE_ID, U.NAME, A.WRITE_TIME, A.TITLE, A.CONTENTS FROM ARTICLES A INNER JOIN USERS U ON A.WRITER_ID = U.USER_ID WHERE ARTICLE_ID = ?";
+        String sql = "SELECT A.ARTICLE_ID, U.NAME, A.WRITE_TIME, A.TITLE, A.CONTENTS FROM ARTICLES A INNER JOIN USERS U ON A.WRITER_ID = U.USER_ID WHERE ARTICLE_ID = ? AND DELETED = FALSE";
         return jdbcTemplate.queryForObject(sql, new ArticleRowMapper(), articleId);
     }
 
     public ArticleDbDto findByArticleIdAndLoginId(Long articleId, String userId) throws EmptyResultDataAccessException {
-        String sql = "SELECT A.ARTICLE_ID, U.NAME, A.WRITE_TIME, A.TITLE, A.CONTENTS FROM ARTICLES A INNER JOIN USERS U ON A.WRITER_ID = U.USER_ID WHERE ARTICLE_ID = ? AND USER_ID = ?";
+        String sql = "SELECT A.ARTICLE_ID, U.NAME, A.WRITE_TIME, A.TITLE, A.CONTENTS FROM ARTICLES A INNER JOIN USERS U ON A.WRITER_ID = U.USER_ID WHERE ARTICLE_ID = ? AND USER_ID = ? AND DELETED = FALSE";
         return jdbcTemplate.queryForObject(sql, new ArticleRowMapper(), articleId, userId);
     }
 
-
     public List<ArticleDbDto> findAll() {
-        String sql = "SELECT A.ARTICLE_ID, U.NAME, A.WRITE_TIME, A.TITLE, A.CONTENTS FROM ARTICLES A INNER JOIN USERS U ON A.WRITER_ID = U.USER_ID";
+        String sql = "SELECT A.ARTICLE_ID, U.NAME, A.WRITE_TIME, A.TITLE, A.CONTENTS FROM ARTICLES A INNER JOIN USERS U ON A.WRITER_ID = U.USER_ID AND DELETED = FALSE";
         return jdbcTemplate.query(sql, new ArticleRowMapper());
     }
 
     public int update(ArticleUpdateDto article) {
-        String sql = "UPDATE ARTICLES SET TITLE = ?, CONTENTS = ? WHERE ARTICLE_ID = ? AND WRITER_ID = ?";
+        String sql = "UPDATE ARTICLES SET TITLE = ?, CONTENTS = ? WHERE ARTICLE_ID = ? AND WRITER_ID = ? AND DELETED = FALSE";
         return jdbcTemplate.update(sql, article.getTitle(), article.getContents(), article.getArticleId(), article.getWriterId());
     }
 
     public int delete(Long articleId, String userId) {
-        String sql = "DELETE ARTICLES WHERE ARTICLE_ID = ? AND WRITER_ID = ?";
+        String sql = "UPDATE ARTICLES SET DELETED = TRUE WHERE ARTICLE_ID = ? AND WRITER_ID = ?";
         return jdbcTemplate.update(sql, articleId, userId);
     }
 }
