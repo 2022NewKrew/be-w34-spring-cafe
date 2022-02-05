@@ -29,7 +29,8 @@ public enum ErrorCode {
     WRONG_USER_PASSWORD(BAD_REQUEST, "잘못된 패스워드 입니다."),
     FAILED_LOGIN(BAD_REQUEST, "로그인에 실패했습니다."),
 
-    FORBIDDEN_USER(FORBIDDEN, "접근 권한이 없습니다.");
+    FORBIDDEN_USER(FORBIDDEN, "접근 권한이 없습니다."),
+    ACCESS_DENIED_USER(FORBIDDEN, "접근 권한이 없습니다.");
 
 
     private final HttpStatus httpStatus;
