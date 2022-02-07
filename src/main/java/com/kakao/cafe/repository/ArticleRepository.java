@@ -26,4 +26,8 @@ public class ArticleRepository {
     public List<Article> getArticleList() {
         return articleDAO.findAll();
     }
+
+    public void update(long id,String title,String content){
+        articleDAO.update(id,title,content);
+    }
 }

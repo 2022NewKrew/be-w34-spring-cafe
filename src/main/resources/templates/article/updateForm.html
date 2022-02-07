@@ -10,29 +10,31 @@
         <div class="container" id="main">
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="panel panel-default">
-
+                    <form class="submit-write" method="post" action="/article/{{article.id}}/edit">
                     <div class="article-header">
-                        <a class="post-write-btn" href="/article/{{article.id}}/update">수정하기</a>
+                        <input class="post-write-btn" type="submit" value="수정완료"/>
                     </div>
-
-                  <header class="post-header">
-                      <p class="post-title">{{article.title}}</p>
-                  </header>
-                  <div class="content-main">
-                      <div class="article">
-                          <div class="article-header">
-                              <div class="article-header-text">
-                                  <p class="article-content">{{article.createUserId}}</p>
-                                  <p class="article-content">
-                                      작성일자:{{article.createDate}}
-                                  </p>
-                                  <p class="article-content">조회 {{article.views}}</p>
+                    <input type="hidden" name="_method" value="PUT" />
+                      <header class="post-header">
+                          <textarea class="form-control" id="title" name="title">{{article.title}}</textarea>
+                      </header>
+                      <div class="content-main">
+                          <div class="article">
+                              <div class="article-header">
+                                  <div class="article-header-text">
+                                      <p class="article-content">{{article.createUserId}}</p>
+                                      <p class="article-content">
+                                          작성일자:{{article.createDate}}
+                                      </p>
+                                      <p class="article-content">조회 {{article.views}}</p>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <textarea class="form-control" id="content" name="content">{{article.content}}</textarea>
                               </div>
                           </div>
-                          <div class="article-doc">
-                              <pre>{{article.content}}</pre>
-                          </div>
                       </div>
+                    </form>
 
                       <div class="post-comment">
                           <div class="post-comment-slipp">

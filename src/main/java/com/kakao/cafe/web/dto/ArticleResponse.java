@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ArticleResponseDTO {
+public class ArticleResponse {
 
     private final long id;
     private final String title;
@@ -14,7 +14,7 @@ public class ArticleResponseDTO {
     private final int views;
 
     @Builder
-    public ArticleResponseDTO(long id, String title, String content, String createUserId, String createDate, int views) {
+    public ArticleResponse(long id, String title, String content, String createUserId, String createDate, int views) {
         this.id = id;
         this.title = title;
         this.content = content;

@@ -29,7 +29,7 @@
                     <tbody>
                     {{#articleList}}
                     <tr>
-                        <td>{{@index_1}}</td> <td><b><a href="articles/{{@index_1}}">{{title}}</a></b> </td> <td>{{createUserId}}</td> <td>{{createDate}}</td> <td>{{views}}</td>
+                        <td>{{id}}</td> <td><b><a href="/articles/{{id}}">{{title}}</a></b> </td> <td>{{createUserId}}</td> <td>{{createDate}}</td> <td>{{views}}</td>
                     </tr>
                     {{/articleList}}
                     </tbody>
@@ -38,7 +38,11 @@
         </div>
     </div>
     <div class="post-btn-container">
-      <a class="post-write-btn" href="article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{#if sessionUser}}
+            <a class="post-write-btn" href="article/form" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{else}}
+            <a class="post-write-btn" href="user/login" class="btn btn-primary pull-right" role="button">글쓰기</a>
+        {{/if}}
     </div>
 </div>
 

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UserResponseDTO {
+public class UserResponse {
 
     private final long id;
     private final String password;
@@ -13,7 +13,7 @@ public class UserResponseDTO {
     private final String registerDate;
 
     @Builder
-    public UserResponseDTO(long id, String password, String userId, String email, String registerDate) {
+    public UserResponse(long id, String password, String userId, String email, String registerDate) {
         this.id = id;
         this.password = password;
         this.userId = userId;
@@ -21,11 +21,11 @@ public class UserResponseDTO {
         this.registerDate = registerDate;
     }
 
-    public static UserResponseDTO nonePasswordInstance(UserResponseDTO userResponseDTO) {
-        return UserResponseDTO.builder()
-                .userId(userResponseDTO.getUserId())
-                .email(userResponseDTO.getEmail())
-                .registerDate(userResponseDTO.getRegisterDate())
+    public static UserResponse nonePasswordInstance(UserResponse userResponse) {
+        return UserResponse.builder()
+                .userId(userResponse.getUserId())
+                .email(userResponse.getEmail())
+                .registerDate(userResponse.getRegisterDate())
                 .build();
     }
 }

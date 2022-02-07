@@ -18,6 +18,7 @@ public class UserDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //USERS TABLE의 ID는 USERS TABLE의 AUTO_INCREMENT 옵션으로 자동 생성.
     public void create(User user) {
         String sql = "INSERT INTO USERS (USER_ID,PASSWORD,EMAIL,REGISTER_DATE) VALUES (?,?,?,?)";
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getEmail(), user.getRegisterDate());
