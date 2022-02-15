@@ -133,3 +133,8 @@
 
 - [x] 중복 필드를 합치기 위한 상속 설계는 좋지 않음, 설계 변경 필요
   - Interface 의 default method 활용 고려
+
+### 2022-02-15 (화)
+
+- `ParameterizedTest` 추가
+> 참고 : https://dublin-java.tistory.com/56 
