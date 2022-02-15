@@ -98,9 +98,14 @@
 
 #### 코드 리뷰 및 자체 피드백
 
+<<<<<<< HEAD
 - [x] 요청한 값이 DB에 존재하지 않을 경우의 예외 처리
   - [x] Service 레이어 예외 처리
   - [x] Controller 레이어 예외 처리
+=======
+- [ ] 요청한 값이 DB에 존재하지 않을 경우의 예외 처리
+  - [x] Service 레이어 예외 처리
+  - [ ] Controller 레이어 예외 처리
 - [x] `<br>` 태그가 수정 화면에서 노출되는 문제 해결 필요
   - `ArticleDto`를 `ArticleViewDto`와 `ArticleEditDto`로 분리
 
@@ -128,3 +133,8 @@
 
 - [x] 중복 필드를 합치기 위한 상속 설계는 좋지 않음, 설계 변경 필요
   - Interface 의 default method 활용 고려
+
+### 2022-02-15 (화)
+
+- `ParameterizedTest` 추가
+> 참고 : https://dublin-java.tistory.com/56 
