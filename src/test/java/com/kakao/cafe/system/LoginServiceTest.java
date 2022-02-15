@@ -7,6 +7,9 @@ import com.kakao.cafe.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,11 +75,12 @@ class LoginServiceTest {
         assertThat(loginUser).isNull();
     }
 
-    @Test
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"garujigi"})
     @DisplayName("로그인 실패 - ID 없음")
-    public void loginIdFail() {
+    public void loginIdFail(String loginId) {
         // given
-        String loginId = "garujigi";
         String password = "test";
 
         // when, then
