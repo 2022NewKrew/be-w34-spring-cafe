@@ -30,6 +30,9 @@ dependencies {
 
 	// Spring Security 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Parameterized Test 의존성 추가
+	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
 }
 
 test {
