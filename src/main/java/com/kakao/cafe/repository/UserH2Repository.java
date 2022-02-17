@@ -19,11 +19,15 @@ public class UserH2Repository implements UserRepository {
 
     @Autowired
     public UserH2Repository(DataSource dataSource) {
+        System.out.println("ㅋㅋㅋㅋㅋㅋㅋ");
+        System.out.println(dataSource);
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public void save(User user) {
+        System.out.println("레포 에서");
+        System.out.println(user);
         jdbcTemplate.update(insertQuery, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 

@@ -18,6 +18,8 @@ public class UserService {
     }
 
     public void save(User user) {
+        System.out.println("서비스");
+        System.out.println(user);
         userRepository.save(user);
     }
 
